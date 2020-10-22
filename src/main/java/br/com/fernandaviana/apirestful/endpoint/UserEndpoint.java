@@ -10,6 +10,6 @@ public class UserEndpoint {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String listar() {
-		return "Rest testado";
+		return "Testando endpoint users";
 	}
 }
