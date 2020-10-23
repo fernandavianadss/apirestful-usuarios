@@ -1,5 +1,6 @@
 package br.com.fernandaviana.apirestful.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.fernandaviana.apirestful.dto.ProfileDTO;
 import br.com.fernandaviana.apirestful.dto.UserDTO;
 import br.com.fernandaviana.apirestful.dto.UserNewDTO;
 import br.com.fernandaviana.apirestful.entities.Phone;
@@ -54,7 +56,8 @@ public class UserService {
 	}
 	
 	public User fromDTO(UserNewDTO objDto) {
-		User user = new User(null, objDto.getName(), objDto.getEmail(), objDto.getPassword());
+		ProfileDTO profile = new ProfileDTO(new Date(), new Date(), new Date(), "Token gerado");
+		User user = new User(null, objDto.getName(), objDto.getEmail(), objDto.getPassword(), profile);
 		Phone phone = new Phone(null, objDto.getNumber(), objDto.getDdd(), user);
 		
 		user.getPhones().add(phone);

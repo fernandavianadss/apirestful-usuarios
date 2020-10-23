@@ -65,5 +65,5 @@ public class UserNewDTO implements Serializable {
 	public void setDdd(String ddd) {
 		this.ddd = ddd;
 	}
-
+	
 }

@@ -9,9 +9,7 @@ public class ProfileDTO implements Serializable {
 
 	private Date created;
 	private Date modified;
-	
 	private Date last_login;
-	
 	private String token;
 
 	public ProfileDTO() {
