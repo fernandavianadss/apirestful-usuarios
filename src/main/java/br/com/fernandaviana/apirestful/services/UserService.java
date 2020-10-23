@@ -11,8 +11,8 @@ import br.com.fernandaviana.apirestful.dto.UserDTO;
 import br.com.fernandaviana.apirestful.dto.UserNewDTO;
 import br.com.fernandaviana.apirestful.entities.Phone;
 import br.com.fernandaviana.apirestful.entities.User;
-import br.com.fernandaviana.apirestful.repository.PhoneRepository;
-import br.com.fernandaviana.apirestful.repository.UserRepository;
+import br.com.fernandaviana.apirestful.interfaces.PhoneRepository;
+import br.com.fernandaviana.apirestful.interfaces.UserRepository;
 import br.com.fernandaviana.apirestful.services.exception.ObjectNotFoundException;
 
 @Service
@@ -24,10 +24,9 @@ public class UserService {
 	@Autowired
 	private PhoneRepository phoneRepository;
 
-	public User find(Long id) {
+	public User findById(Long id) {
 
 		Optional<User> obj = repository.findById(id);
-
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado! Id: " + id));
 
 	}
@@ -41,7 +40,7 @@ public class UserService {
 	}
 
 	public User update(User obj) {
-		User newObj = find(obj.getId());
+		User newObj = findById(obj.getId());
 		updateData(newObj, obj);
 		return repository.save(newObj);
 	}

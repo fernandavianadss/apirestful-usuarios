@@ -5,6 +5,9 @@ import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import br.com.fernandaviana.apirestful.services.validation.UserInsert;
+
+@UserInsert
 public class UserNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;

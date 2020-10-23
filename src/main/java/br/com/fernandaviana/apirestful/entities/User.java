@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,34 +14,37 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity
-public class User implements Serializable{
+import br.com.fernandaviana.apirestful.dto.ProfileDTO;
 
-	/**
-	 * 
-	 */
+@Entity
+public class User implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@Column(unique = true)
 	private String email;
 	private String password;
-	
+
+	private ProfileDTO profile;
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Phone> phones = new ArrayList<>();
-	
+
 	public User() {
 	}
-	
 
 	public User(String name, String email) {
 		super();
 		this.name = name;
 		this.email = email;
 	}
+	
+	
 
 	public User(Long id, String name, String email, String password) {
 		super();
@@ -49,7 +53,16 @@ public class User implements Serializable{
 		this.email = email;
 		this.password = password;
 	}
-	
+
+	public User(Long id, String name, String email, String password, ProfileDTO profile) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.profile = profile;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -81,6 +94,14 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public ProfileDTO getProfile() {
+		return profile;
+	}
+
+	public void setProfile(ProfileDTO profile) {
+		this.profile = profile;
+	}
 
 	public List<Phone> getPhones() {
 		return phones;
@@ -110,5 +131,5 @@ public class User implements Serializable{
 			return false;
 		return true;
 	}
-	
+
 }

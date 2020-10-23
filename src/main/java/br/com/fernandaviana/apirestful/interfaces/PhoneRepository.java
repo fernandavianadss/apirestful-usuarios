@@ -1,4 +1,4 @@
-package br.com.fernandaviana.apirestful.repository;
+package br.com.fernandaviana.apirestful.interfaces;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
