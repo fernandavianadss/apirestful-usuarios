@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder pw;
 	
 	@Autowired
 	private PhoneRepository phoneRepository;
@@ -57,7 +61,7 @@ public class UserService {
 	
 	public User fromDTO(UserNewDTO objDto) {
 		ProfileDTO profile = new ProfileDTO(new Date(), new Date(), new Date(), "Token gerado");
-		User user = new User(null, objDto.getName(), objDto.getEmail(), objDto.getPassword(), profile);
+		User user = new User(null, objDto.getName(), objDto.getEmail(), pw.encode(objDto.getPassword()), profile);
 		Phone phone = new Phone(null, objDto.getNumber(), objDto.getDdd(), user);
 		
 		user.getPhones().add(phone);

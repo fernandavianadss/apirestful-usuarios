@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import br.com.fernandaviana.apirestful.dto.ProfileDTO;
@@ -26,9 +27,13 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
+	
 	@Column(unique = true)
 	private String email;
+	
+	@JsonIgnore
 	private String password;
 	
 	private ProfileDTO profile;

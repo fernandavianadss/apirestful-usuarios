@@ -12,12 +12,14 @@ public class UserNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty(message = "Preenchimento obrigatório")
+	@NotEmpty(message = "Informação obrigatória")
 	private String name;
 
-	@NotEmpty(message = "Preenchimento obrigatório")
+	@NotEmpty(message = "Informação obrigatória")
 	@Email(message = "Email Inválido")
 	private String email;
+	
+	@NotEmpty(message = "Informação obrigatória")
 	private String password;
 
 	private String number;
