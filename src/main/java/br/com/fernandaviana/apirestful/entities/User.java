@@ -2,21 +2,28 @@ package br.com.fernandaviana.apirestful.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import br.com.fernandaviana.apirestful.dto.ProfileDTO;
+import br.com.fernandaviana.apirestful.entities.enums.ProfileEnum;
 
 @Entity
 @Table(name = "tb_user")
@@ -36,13 +43,22 @@ public class User implements Serializable {
 	@JsonIgnore
 	private String password;
 	
-	private ProfileDTO profile;
+	@JsonIgnore
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="tab_profiles")
+	private Set<Integer> profiles = new HashSet<>();
+	
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="user")
+	private Profile profile;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Phone> phones = new ArrayList<>();
+	
+	
 
 	public User() {
+		addProfile(ProfileEnum.USER);
 	}
 
 	public User(String name, String email) {
@@ -61,13 +77,14 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public User(Long id, String name, String email, String password, ProfileDTO profile) {
+	public User(Long id, String name, String email, String password, Profile profile) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.profile = profile;
+		addProfile(ProfileEnum.USER);
 	}
 
 	public Long getId() {
@@ -102,12 +119,20 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
-	public ProfileDTO getProfile() {
+	public Profile getProfile() {
 		return profile;
 	}
 
-	public void setProfile(ProfileDTO profile) {
+	public void setProfile(Profile profile) {
 		this.profile = profile;
+	}
+	
+	public Set<ProfileEnum> getProfiles() {
+		return profiles.stream().map(x -> ProfileEnum.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addProfile(ProfileEnum profile) {
+		profiles.add(profile.getCod());
 	}
 
 	public List<Phone> getPhones() {

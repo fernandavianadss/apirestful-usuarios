@@ -2,7 +2,6 @@ package br.com.fernandaviana.apirestful.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,7 +21,7 @@ import br.com.fernandaviana.apirestful.dto.UserCredentialsDTO;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager; 
     
     private JWTUtil jwtUtil;
 
@@ -53,7 +52,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	
 		String username = ((UserSecurity) auth.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
-        res.addHeader("Authorization", "Bearer " + token);
+        res.addHeader("Authorization", token);
         res.addHeader("access-control-expose-headers", "Authorization");
 	}
 	
@@ -68,12 +67,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
         
         private String json() {
-            long date = new Date().getTime();
-            return "{\"timestamp\": " + date + ", "
-                + "\"status\": 401, "
-                + "\"error\": \"Não autorizado\", "
-                + "\"message\": \"Email ou senha inválidos\", "
-                + "\"path\": \"/login\"}";
+            return "{\"status\": 401, "
+                + "\"messagem\": \"Usuário e/ou senha inválidos\"}";
         }
     }
 }

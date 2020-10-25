@@ -4,12 +4,12 @@ public class AuthorizationException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public AuthorizationException(String msg) {
-		super(msg);
+	public AuthorizationException(String mensagem) {
+		super(mensagem);
 	}
 
-	public AuthorizationException(String msg, Throwable cause) {
-		super(msg, cause);
+	public AuthorizationException(String mensagem, Throwable cause) {
+		super(mensagem, cause);
 	}
 
 }

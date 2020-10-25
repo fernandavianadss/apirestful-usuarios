@@ -14,11 +14,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import br.com.fernandaviana.apirestful.security.JWTAuthenticationFilter;
+import br.com.fernandaviana.apirestful.security.JWTAuthorizationFilter;
 import br.com.fernandaviana.apirestful.security.JWTUtil;
 
 @EnableWebSecurity
@@ -36,19 +39,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	public static final String[] PUBLIC_MATCHERS = {
 
-			"/h2-console/**", "/users/**"
+			"/h2-console/**"
 
 	};
 
 	public static final String[] PUBLIC_MATCHERS_GET = {
 
-			"/h2-console/**", "/users/**"
+			"/users/**",  "/profile/**"
 
 	};
 	
 	public static final String[] PUBLIC_MATCHERS_POST = {
 
-			"/h2-console/**", "/users/**"
+			"/users/**"
 
 	};
 	
@@ -59,13 +62,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
+		
+		CharacterEncodingFilter filter = new CharacterEncodingFilter(); 
+		filter.setEncoding("UTF-8"); 
+		filter.setForceEncoding(true); 
+		http.addFilterBefore(filter, CsrfFilter.class);
 
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-				.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll().antMatchers(PUBLIC_MATCHERS).permitAll()
+				.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+				.antMatchers(PUBLIC_MATCHERS).permitAll()
 				.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	

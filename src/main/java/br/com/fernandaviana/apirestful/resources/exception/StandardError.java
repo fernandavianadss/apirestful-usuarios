@@ -7,13 +7,13 @@ public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer status;
-	private String msg;
+	private String mensagem;
 	
 
-	public StandardError(Integer status, String msg) {
+	public StandardError(Integer status, String mensagem) {
 		super();
 		this.status = status;
-		this.msg = msg;
+		this.mensagem = mensagem;
 	}
 
 	public Integer getStatus() {
@@ -24,12 +24,12 @@ public class StandardError implements Serializable {
 		this.status = status;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getMensagem() {
+		return mensagem;
 	}
 
-	public void setMessage(String msg) {
-		this.msg = msg;
+	public void setMessage(String mensagem) {
+		this.mensagem = mensagem;
 	}
 
 }

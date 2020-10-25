@@ -22,8 +22,8 @@ import br.com.fernandaviana.apirestful.entities.User;
 import br.com.fernandaviana.apirestful.services.UserService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/profile")
+public class ProfileResource {
 	
 	@Autowired
 	private UserService service;
@@ -35,6 +35,7 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody UserNewDTO objDto) {
 		User obj = service.fromDTO(objDto);

@@ -1,9 +1,14 @@
 package br.com.fernandaviana.apirestful.security;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import br.com.fernandaviana.apirestful.entities.enums.ProfileEnum;
 
 public class UserSecurity implements UserDetails{
 	
@@ -12,17 +17,18 @@ public class UserSecurity implements UserDetails{
 	private Long id;
 	private String email;
 	private String password;
-	
+	private Collection<? extends GrantedAuthority> authorities;
 	
 	
 	public UserSecurity() {
 	}
 
-	public UserSecurity(Long id, String email, String password) {
+	public UserSecurity(Long id, String email, String password, Set<ProfileEnum> profiles) {
 		super();
 		this.id = id;
 		this.email = email;
 		this.password = password;
+		this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
 	}
 
 	public Long getId() {
@@ -32,7 +38,7 @@ public class UserSecurity implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return authorities;
 	}
 
 	@Override
@@ -49,6 +55,7 @@ public class UserSecurity implements UserDetails{
 
 	@Override
 	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -68,6 +75,10 @@ public class UserSecurity implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public boolean hasRole(ProfileEnum profile) {
+		return getAuthorities().contains(new SimpleGrantedAuthority(profile.getDescription()));
 	}
 
 }
