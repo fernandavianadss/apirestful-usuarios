@@ -1,6 +1,6 @@
 # Apirestful-usuarios
 
-Objetivo do projeto era a criação de uma API RESTful de criação de usuários e login com o framework Spring e geração de token com JWT
+Objetivo do projeto era a criação de uma API RESTful de criação de usuários e login com o framework Spring e JWT
 
 <ol>
 <li>
