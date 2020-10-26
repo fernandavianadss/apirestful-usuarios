@@ -1,4 +1,4 @@
-# apirestful-usuarios
+# Apirestful-usuarios
 
 Objetivo do projeto era a criação de uma API RESTful de criação de usuários e login com o framework Spring
 
