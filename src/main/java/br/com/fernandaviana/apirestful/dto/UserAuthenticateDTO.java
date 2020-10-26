@@ -1,41 +1,27 @@
-package br.com.fernandaviana.apirestful.entities;
+package br.com.fernandaviana.apirestful.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+import br.com.fernandaviana.apirestful.entities.Phone;
+import br.com.fernandaviana.apirestful.entities.User;
+
+public class UserAuthenticateDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
-	
-	@Column(unique = true)
+
 	private String email;
-	
-	@JsonIgnore
+
 	private String password;
-	
+
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "America/Sao_Paulo")
 	private Date created;
 
@@ -47,34 +33,13 @@ public class User implements Serializable {
 
 	private String token;
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Phone> phones = new ArrayList<>();
-	
-	
 
-	public User() {
-	}
-
-	public User(String name, String email) {
-		super();
-		this.name = name;
-		this.email = email;
+	public UserAuthenticateDTO() {
 	}
 	
-	
-
-	public User(Long id, String name, String email, String password) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
-
-	
-
-	public User(Long id, String name, String email, String password, Date created, Date modified, Date last_login) {
+	public UserAuthenticateDTO(Long id, String name, String email, String password, Date created, Date modified,
+			Date last_login, String token, List<Phone> phones) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -83,7 +48,11 @@ public class User implements Serializable {
 		this.created = created;
 		this.modified = modified;
 		this.last_login = last_login;
+		this.token = token;
+		this.phones = phones;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -116,7 +85,7 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public Date getCreated() {
 		return created;
 	}
@@ -157,29 +126,9 @@ public class User implements Serializable {
 		return phones;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+	public static UserAuthenticateDTO toDTO(User user, Date last_login) {
+		return new UserAuthenticateDTO(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getCreated(),
+				user.getModified(), last_login, user.getToken(), user.getPhones());
 	}
 
 }

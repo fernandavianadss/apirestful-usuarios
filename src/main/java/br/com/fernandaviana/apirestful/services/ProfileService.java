@@ -13,13 +13,13 @@ import br.com.fernandaviana.apirestful.services.exception.ObjectNotFoundExceptio
 public class ProfileService {
 
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
 
 	public User findById(Long id) {
 
-		Optional<User> obj = repository.findById(id);
+		Optional<User> obj = userRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado! Id: " + id));
 
 	}
-
+	
 }
