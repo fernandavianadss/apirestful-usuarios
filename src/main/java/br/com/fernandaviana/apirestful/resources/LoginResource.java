@@ -18,6 +18,7 @@ import br.com.fernandaviana.apirestful.dto.UserResponseDTO;
 import br.com.fernandaviana.apirestful.entities.User;
 import br.com.fernandaviana.apirestful.services.UserAuthenticationService;
 import br.com.fernandaviana.apirestful.services.UserService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/login")
@@ -30,6 +31,7 @@ public class LoginResource {
 	private UserService service;
 	
 	@RequestMapping(method=RequestMethod.POST)
+	@ApiOperation(value = "Cria um login")
 	public ResponseEntity<UserResponseDTO> insert(@Valid @RequestBody UserCredentialsDTO userCredentials, @RequestHeader String Authorization) {
 		User obj = userService.userAuthenticate(userCredentials, Authorization);
 		obj.setLast_login(new Date());

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +16,9 @@ import br.com.fernandaviana.apirestful.entities.Phone;
 import br.com.fernandaviana.apirestful.entities.User;
 import br.com.fernandaviana.apirestful.interfaces.PhoneRepository;
 import br.com.fernandaviana.apirestful.interfaces.UserRepository;
+import br.com.fernandaviana.apirestful.services.exception.DatabaseException;
 import br.com.fernandaviana.apirestful.services.exception.ObjectNotFoundException;
+import br.com.fernandaviana.apirestful.services.exception.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -40,6 +44,19 @@ public class UserService {
 		obj = userRepository.save(obj);
 		phoneRepository.saveAll(obj.getPhones());
 		return obj;
+	}
+	
+	public void delete(Long id) {
+		
+		try {
+			userRepository.deleteById(id);
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+		
 	}
 
 	public User update(User obj) {

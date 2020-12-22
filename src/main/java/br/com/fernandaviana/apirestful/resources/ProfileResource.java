@@ -14,6 +14,7 @@ import br.com.fernandaviana.apirestful.dto.UserDTO;
 import br.com.fernandaviana.apirestful.dto.UserResponseDTO;
 import br.com.fernandaviana.apirestful.entities.User;
 import br.com.fernandaviana.apirestful.services.UserService;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/profile")
@@ -24,6 +25,7 @@ public class ProfileResource {
 	private UserService service;
 	
 	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Obtem um perfil único")
 	public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
 		
 		User obj = service.findById(id);
@@ -32,6 +34,7 @@ public class ProfileResource {
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
+	@ApiOperation(value = "Obtem uma lista de perfis")
 	public ResponseEntity<List<UserDTO>> findAll() {
 		List<User> list = service.findAll();
 		List<UserDTO> listDto = list.stream().map(obj -> new UserDTO(obj)).collect(Collectors.toList());  
